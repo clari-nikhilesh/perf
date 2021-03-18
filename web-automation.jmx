@@ -78,7 +78,7 @@
           </elementProp>
           <elementProp name="rampup" elementType="Argument">
             <stringProp name="Argument.name">rampup</stringProp>
-            <stringProp name="Argument.value">${__P(rampup,1!)}</stringProp>
+            <stringProp name="Argument.value">${__P(rampup,1)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
             <stringProp name="Argument.desc">Ramp up time in seconds</stringProp>
           </elementProp>
@@ -132,7 +132,7 @@
           <stringProp name="LoopController.loops">${iterations}</stringProp>
         </elementProp>
         <stringProp name="ThreadGroup.num_threads">${threads}</stringProp>
-        <stringProp name="ThreadGroup.ramp_time">{}</stringProp>
+        <stringProp name="ThreadGroup.ramp_time">${rampup}</stringProp>
         <boolProp name="ThreadGroup.scheduler">false</boolProp>
         <stringProp name="ThreadGroup.duration">0</stringProp>
         <stringProp name="ThreadGroup.delay">0</stringProp>
@@ -207,7 +207,7 @@
             <hashTree/>
             <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="Regular Expression Extractor" enabled="true">
               <stringProp name="RegexExtractor.useHeaders">true</stringProp>
-              <stringProp name="RegexExtractor.refname">xsrfToken</stringProp>
+              <stringProp name="RegexExtractor.refname">XSRFTOKEN</stringProp>
               <stringProp name="RegexExtractor.regex">Set-Cookie: XSRF-TOKEN=(.+?);</stringProp>
               <stringProp name="RegexExtractor.template">$1$</stringProp>
               <stringProp name="RegexExtractor.default">NO_XSRF_TOKEN</stringProp>
@@ -588,7 +588,7 @@
             </HeaderManager>
             <hashTree/>
           </hashTree>
-          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="https://gateway-steelix.clari.com/api/v2core/jobmetadata/viewed?viewType=web" enabled="true">
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="https://gateway-steelix.clari.com/api/v2core/jobmetadata/viewed?viewType=web" enabled="false">
             <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
             <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
               <collectionProp name="Arguments.arguments">
@@ -614,15 +614,45 @@
             <stringProp name="HTTPSampler.response_timeout"></stringProp>
           </HTTPSamplerProxy>
           <hashTree>
+            <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header manager" enabled="true">
+              <collectionProp name="HeaderManager.headers">
+                <elementProp name="X-XSRF-TOKEN" elementType="Header">
+                  <stringProp name="Header.name">X-XSRF-TOKEN</stringProp>
+                  <stringProp name="Header.value">${XSRFTOKEN}</stringProp>
+                </elementProp>
+                <elementProp name="Content-Type" elementType="Header">
+                  <stringProp name="Header.name">Content-Type</stringProp>
+                  <stringProp name="Header.value">application/json</stringProp>
+                </elementProp>
+                <elementProp name="" elementType="Header">
+                  <stringProp name="Header.name">sec-fetch-mode</stringProp>
+                  <stringProp name="Header.value">cors</stringProp>
+                </elementProp>
+                <elementProp name="" elementType="Header">
+                  <stringProp name="Header.name">:authority</stringProp>
+                  <stringProp name="Header.value">gateway-steelix.clari.com</stringProp>
+                </elementProp>
+                <elementProp name="" elementType="Header">
+                  <stringProp name="Header.name">Access-Control-Allow-Origin</stringProp>
+                  <stringProp name="Header.value">*</stringProp>
+                </elementProp>
+              </collectionProp>
+            </HeaderManager>
+            <hashTree/>
             <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header manager" enabled="false">
               <collectionProp name="HeaderManager.headers">
                 <elementProp name="X-XSRF-TOKEN" elementType="Header">
                   <stringProp name="Header.name">X-XSRF-TOKEN</stringProp>
-                  <stringProp name="Header.value">405fd7a497dad4e632143ba09d9fd255d72ac54b82b1e7da672ed79a54abd3ea</stringProp>
+                  <stringProp name="Header.value">${XSRFTOKEN}</stringProp>
                 </elementProp>
-                <elementProp name="newrelic" elementType="Header">
-                  <stringProp name="Header.name">newrelic</stringProp>
-                  <stringProp name="Header.value">eyJ2IjpbMCwxXSwiZCI6eyJ0eSI6IkJyb3dzZXIiLCJhYyI6IjMwMzAwOSIsImFwIjoiNzIzMzA0OTg5IiwiaWQiOiJlYWFjYjdkY2NiMmJlNzljIiwidHIiOiJlZGM0ZmZhMjg2NzhmYzI1YzllYWQ0NDg1MmY1MmU2MCIsInRpIjoxNjE1NjkwMDA0OTI0fX0=</stringProp>
+              </collectionProp>
+            </HeaderManager>
+            <hashTree/>
+            <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header manager" enabled="false">
+              <collectionProp name="HeaderManager.headers">
+                <elementProp name="X-XSRF-TOKEN" elementType="Header">
+                  <stringProp name="Header.name">X-XSRF-TOKEN</stringProp>
+                  <stringProp name="Header.value">${XSRFTOKEN}</stringProp>
                 </elementProp>
                 <elementProp name="Content-Type" elementType="Header">
                   <stringProp name="Header.name">Content-Type</stringProp>
@@ -1281,11 +1311,11 @@
             <stringProp name="HTTPSampler.response_timeout"></stringProp>
           </HTTPSamplerProxy>
           <hashTree>
-            <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header manager" enabled="false">
+            <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header manager" enabled="true">
               <collectionProp name="HeaderManager.headers">
                 <elementProp name="X-XSRF-TOKEN" elementType="Header">
                   <stringProp name="Header.name">X-XSRF-TOKEN</stringProp>
-                  <stringProp name="Header.value">405fd7a497dad4e632143ba09d9fd255d72ac54b82b1e7da672ed79a54abd3ea</stringProp>
+                  <stringProp name="Header.value">${XSRFTOKEN}</stringProp>
                 </elementProp>
                 <elementProp name="newrelic" elementType="Header">
                   <stringProp name="Header.name">newrelic</stringProp>
@@ -1609,11 +1639,11 @@
             <stringProp name="HTTPSampler.response_timeout"></stringProp>
           </HTTPSamplerProxy>
           <hashTree>
-            <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header manager" enabled="false">
+            <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header manager" enabled="true">
               <collectionProp name="HeaderManager.headers">
                 <elementProp name="X-XSRF-TOKEN" elementType="Header">
                   <stringProp name="Header.name">X-XSRF-TOKEN</stringProp>
-                  <stringProp name="Header.value">405fd7a497dad4e632143ba09d9fd255d72ac54b82b1e7da672ed79a54abd3ea</stringProp>
+                  <stringProp name="Header.value">${XSRFTOKEN}</stringProp>
                 </elementProp>
                 <elementProp name="newrelic" elementType="Header">
                   <stringProp name="Header.name">newrelic</stringProp>
@@ -2009,7 +2039,7 @@
             <stringProp name="HTTPSampler.response_timeout"></stringProp>
           </HTTPSamplerProxy>
           <hashTree>
-            <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header manager" enabled="true">
+            <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header manager" enabled="false">
               <collectionProp name="HeaderManager.headers">
                 <elementProp name="X-XSRF-TOKEN" elementType="Header">
                   <stringProp name="Header.name">X-XSRF-TOKEN</stringProp>
@@ -2091,7 +2121,7 @@
             <stringProp name="HTTPSampler.response_timeout"></stringProp>
           </HTTPSamplerProxy>
           <hashTree>
-            <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header manager" enabled="true">
+            <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header manager" enabled="false">
               <collectionProp name="HeaderManager.headers">
                 <elementProp name="X-XSRF-TOKEN" elementType="Header">
                   <stringProp name="Header.name">X-XSRF-TOKEN</stringProp>
@@ -2139,7 +2169,7 @@
             <stringProp name="HTTPSampler.response_timeout"></stringProp>
           </HTTPSamplerProxy>
           <hashTree>
-            <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header manager" enabled="true">
+            <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header manager" enabled="false">
               <collectionProp name="HeaderManager.headers">
                 <elementProp name="X-XSRF-TOKEN" elementType="Header">
                   <stringProp name="Header.name">X-XSRF-TOKEN</stringProp>
@@ -2194,7 +2224,7 @@
             <stringProp name="HTTPSampler.response_timeout"></stringProp>
           </HTTPSamplerProxy>
           <hashTree>
-            <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header manager" enabled="true">
+            <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header manager" enabled="false">
               <collectionProp name="HeaderManager.headers">
                 <elementProp name="X-XSRF-TOKEN" elementType="Header">
                   <stringProp name="Header.name">X-XSRF-TOKEN</stringProp>
@@ -2347,7 +2377,7 @@
             <stringProp name="HTTPSampler.response_timeout"></stringProp>
           </HTTPSamplerProxy>
           <hashTree>
-            <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header manager" enabled="true">
+            <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header manager" enabled="false">
               <collectionProp name="HeaderManager.headers">
                 <elementProp name="X-XSRF-TOKEN" elementType="Header">
                   <stringProp name="Header.name">X-XSRF-TOKEN</stringProp>
@@ -2500,7 +2530,7 @@
             <stringProp name="HTTPSampler.response_timeout"></stringProp>
           </HTTPSamplerProxy>
           <hashTree>
-            <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header manager" enabled="true">
+            <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header manager" enabled="false">
               <collectionProp name="HeaderManager.headers">
                 <elementProp name="X-XSRF-TOKEN" elementType="Header">
                   <stringProp name="Header.name">X-XSRF-TOKEN</stringProp>
@@ -2591,7 +2621,7 @@
             <stringProp name="HTTPSampler.response_timeout"></stringProp>
           </HTTPSamplerProxy>
           <hashTree>
-            <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header manager" enabled="true">
+            <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header manager" enabled="false">
               <collectionProp name="HeaderManager.headers">
                 <elementProp name="X-XSRF-TOKEN" elementType="Header">
                   <stringProp name="Header.name">X-XSRF-TOKEN</stringProp>
@@ -2639,7 +2669,7 @@
             <stringProp name="HTTPSampler.response_timeout"></stringProp>
           </HTTPSamplerProxy>
           <hashTree>
-            <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header manager" enabled="true">
+            <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header manager" enabled="false">
               <collectionProp name="HeaderManager.headers">
                 <elementProp name="X-XSRF-TOKEN" elementType="Header">
                   <stringProp name="Header.name">X-XSRF-TOKEN</stringProp>
@@ -2680,7 +2710,7 @@
             <stringProp name="HTTPSampler.response_timeout"></stringProp>
           </HTTPSamplerProxy>
           <hashTree>
-            <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header manager" enabled="true">
+            <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header manager" enabled="false">
               <collectionProp name="HeaderManager.headers">
                 <elementProp name="X-XSRF-TOKEN" elementType="Header">
                   <stringProp name="Header.name">X-XSRF-TOKEN</stringProp>
@@ -2721,7 +2751,7 @@
             <stringProp name="HTTPSampler.response_timeout"></stringProp>
           </HTTPSamplerProxy>
           <hashTree>
-            <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header manager" enabled="true">
+            <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header manager" enabled="false">
               <collectionProp name="HeaderManager.headers">
                 <elementProp name="X-XSRF-TOKEN" elementType="Header">
                   <stringProp name="Header.name">X-XSRF-TOKEN</stringProp>
@@ -2776,7 +2806,7 @@
             <stringProp name="HTTPSampler.response_timeout"></stringProp>
           </HTTPSamplerProxy>
           <hashTree>
-            <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header manager" enabled="true">
+            <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header manager" enabled="false">
               <collectionProp name="HeaderManager.headers">
                 <elementProp name="X-XSRF-TOKEN" elementType="Header">
                   <stringProp name="Header.name">X-XSRF-TOKEN</stringProp>
@@ -2831,7 +2861,7 @@
             <stringProp name="HTTPSampler.response_timeout"></stringProp>
           </HTTPSamplerProxy>
           <hashTree>
-            <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header manager" enabled="true">
+            <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header manager" enabled="false">
               <collectionProp name="HeaderManager.headers">
                 <elementProp name="X-XSRF-TOKEN" elementType="Header">
                   <stringProp name="Header.name">X-XSRF-TOKEN</stringProp>
@@ -2879,7 +2909,7 @@
             <stringProp name="HTTPSampler.response_timeout"></stringProp>
           </HTTPSamplerProxy>
           <hashTree>
-            <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header manager" enabled="true">
+            <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header manager" enabled="false">
               <collectionProp name="HeaderManager.headers">
                 <elementProp name="X-XSRF-TOKEN" elementType="Header">
                   <stringProp name="Header.name">X-XSRF-TOKEN</stringProp>
@@ -2941,7 +2971,7 @@
             <stringProp name="HTTPSampler.response_timeout"></stringProp>
           </HTTPSamplerProxy>
           <hashTree>
-            <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header manager" enabled="true">
+            <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header manager" enabled="false">
               <collectionProp name="HeaderManager.headers">
                 <elementProp name="X-XSRF-TOKEN" elementType="Header">
                   <stringProp name="Header.name">X-XSRF-TOKEN</stringProp>
@@ -3003,7 +3033,7 @@
             <stringProp name="HTTPSampler.response_timeout"></stringProp>
           </HTTPSamplerProxy>
           <hashTree>
-            <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header manager" enabled="true">
+            <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header manager" enabled="false">
               <collectionProp name="HeaderManager.headers">
                 <elementProp name="X-XSRF-TOKEN" elementType="Header">
                   <stringProp name="Header.name">X-XSRF-TOKEN</stringProp>
@@ -3050,7 +3080,7 @@
             <stringProp name="HTTPSampler.response_timeout"></stringProp>
           </HTTPSamplerProxy>
           <hashTree>
-            <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header manager" enabled="true">
+            <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header manager" enabled="false">
               <collectionProp name="HeaderManager.headers">
                 <elementProp name="X-XSRF-TOKEN" elementType="Header">
                   <stringProp name="Header.name">X-XSRF-TOKEN</stringProp>
@@ -3098,7 +3128,7 @@
             <stringProp name="HTTPSampler.response_timeout"></stringProp>
           </HTTPSamplerProxy>
           <hashTree>
-            <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header manager" enabled="true">
+            <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header manager" enabled="false">
               <collectionProp name="HeaderManager.headers">
                 <elementProp name="X-XSRF-TOKEN" elementType="Header">
                   <stringProp name="Header.name">X-XSRF-TOKEN</stringProp>
@@ -3139,7 +3169,7 @@
             <stringProp name="HTTPSampler.response_timeout"></stringProp>
           </HTTPSamplerProxy>
           <hashTree>
-            <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header manager" enabled="true">
+            <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header manager" enabled="false">
               <collectionProp name="HeaderManager.headers">
                 <elementProp name="X-XSRF-TOKEN" elementType="Header">
                   <stringProp name="Header.name">X-XSRF-TOKEN</stringProp>
@@ -3180,7 +3210,7 @@
             <stringProp name="HTTPSampler.response_timeout"></stringProp>
           </HTTPSamplerProxy>
           <hashTree>
-            <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header manager" enabled="true">
+            <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header manager" enabled="false">
               <collectionProp name="HeaderManager.headers">
                 <elementProp name="X-XSRF-TOKEN" elementType="Header">
                   <stringProp name="Header.name">X-XSRF-TOKEN</stringProp>
@@ -3235,7 +3265,7 @@
             <stringProp name="HTTPSampler.response_timeout"></stringProp>
           </HTTPSamplerProxy>
           <hashTree>
-            <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header manager" enabled="true">
+            <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header manager" enabled="false">
               <collectionProp name="HeaderManager.headers">
                 <elementProp name="X-XSRF-TOKEN" elementType="Header">
                   <stringProp name="Header.name">X-XSRF-TOKEN</stringProp>
@@ -3276,7 +3306,7 @@
             <stringProp name="HTTPSampler.response_timeout"></stringProp>
           </HTTPSamplerProxy>
           <hashTree>
-            <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header manager" enabled="true">
+            <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header manager" enabled="false">
               <collectionProp name="HeaderManager.headers">
                 <elementProp name="X-XSRF-TOKEN" elementType="Header">
                   <stringProp name="Header.name">X-XSRF-TOKEN</stringProp>
@@ -3401,7 +3431,7 @@
             <stringProp name="HTTPSampler.response_timeout"></stringProp>
           </HTTPSamplerProxy>
           <hashTree>
-            <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header manager" enabled="true">
+            <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header manager" enabled="false">
               <collectionProp name="HeaderManager.headers">
                 <elementProp name="X-XSRF-TOKEN" elementType="Header">
                   <stringProp name="Header.name">X-XSRF-TOKEN</stringProp>
@@ -3492,7 +3522,7 @@
             <stringProp name="HTTPSampler.response_timeout"></stringProp>
           </HTTPSamplerProxy>
           <hashTree>
-            <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header manager" enabled="true">
+            <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header manager" enabled="false">
               <collectionProp name="HeaderManager.headers">
                 <elementProp name="X-XSRF-TOKEN" elementType="Header">
                   <stringProp name="Header.name">X-XSRF-TOKEN</stringProp>
@@ -3533,7 +3563,7 @@
             <stringProp name="HTTPSampler.response_timeout"></stringProp>
           </HTTPSamplerProxy>
           <hashTree>
-            <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header manager" enabled="true">
+            <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header manager" enabled="false">
               <collectionProp name="HeaderManager.headers">
                 <elementProp name="X-XSRF-TOKEN" elementType="Header">
                   <stringProp name="Header.name">X-XSRF-TOKEN</stringProp>
@@ -3574,7 +3604,7 @@
             <stringProp name="HTTPSampler.response_timeout"></stringProp>
           </HTTPSamplerProxy>
           <hashTree>
-            <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header manager" enabled="true">
+            <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header manager" enabled="false">
               <collectionProp name="HeaderManager.headers">
                 <elementProp name="X-XSRF-TOKEN" elementType="Header">
                   <stringProp name="Header.name">X-XSRF-TOKEN</stringProp>
@@ -3629,7 +3659,7 @@
             <stringProp name="HTTPSampler.response_timeout"></stringProp>
           </HTTPSamplerProxy>
           <hashTree>
-            <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header manager" enabled="true">
+            <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header manager" enabled="false">
               <collectionProp name="HeaderManager.headers">
                 <elementProp name="X-XSRF-TOKEN" elementType="Header">
                   <stringProp name="Header.name">X-XSRF-TOKEN</stringProp>
@@ -3747,7 +3777,7 @@
             <stringProp name="HTTPSampler.response_timeout"></stringProp>
           </HTTPSamplerProxy>
           <hashTree>
-            <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header manager" enabled="true">
+            <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header manager" enabled="false">
               <collectionProp name="HeaderManager.headers">
                 <elementProp name="X-XSRF-TOKEN" elementType="Header">
                   <stringProp name="Header.name">X-XSRF-TOKEN</stringProp>
@@ -3787,7 +3817,7 @@
             <stringProp name="HTTPSampler.response_timeout"></stringProp>
           </HTTPSamplerProxy>
           <hashTree>
-            <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header manager" enabled="true">
+            <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header manager" enabled="false">
               <collectionProp name="HeaderManager.headers">
                 <elementProp name="X-XSRF-TOKEN" elementType="Header">
                   <stringProp name="Header.name">X-XSRF-TOKEN</stringProp>
@@ -3859,7 +3889,7 @@
             <stringProp name="HTTPSampler.response_timeout"></stringProp>
           </HTTPSamplerProxy>
           <hashTree>
-            <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header manager" enabled="true">
+            <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header manager" enabled="false">
               <collectionProp name="HeaderManager.headers">
                 <elementProp name="X-XSRF-TOKEN" elementType="Header">
                   <stringProp name="Header.name">X-XSRF-TOKEN</stringProp>
@@ -3907,7 +3937,7 @@
             <stringProp name="HTTPSampler.response_timeout"></stringProp>
           </HTTPSamplerProxy>
           <hashTree>
-            <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header manager" enabled="true">
+            <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header manager" enabled="false">
               <collectionProp name="HeaderManager.headers">
                 <elementProp name="X-XSRF-TOKEN" elementType="Header">
                   <stringProp name="Header.name">X-XSRF-TOKEN</stringProp>
@@ -3948,7 +3978,7 @@
             <stringProp name="HTTPSampler.response_timeout"></stringProp>
           </HTTPSamplerProxy>
           <hashTree>
-            <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header manager" enabled="true">
+            <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header manager" enabled="false">
               <collectionProp name="HeaderManager.headers">
                 <elementProp name="X-XSRF-TOKEN" elementType="Header">
                   <stringProp name="Header.name">X-XSRF-TOKEN</stringProp>
@@ -3989,7 +4019,7 @@
             <stringProp name="HTTPSampler.response_timeout"></stringProp>
           </HTTPSamplerProxy>
           <hashTree>
-            <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header manager" enabled="true">
+            <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header manager" enabled="false">
               <collectionProp name="HeaderManager.headers">
                 <elementProp name="X-XSRF-TOKEN" elementType="Header">
                   <stringProp name="Header.name">X-XSRF-TOKEN</stringProp>
@@ -4044,7 +4074,7 @@
             <stringProp name="HTTPSampler.response_timeout"></stringProp>
           </HTTPSamplerProxy>
           <hashTree>
-            <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header manager" enabled="true">
+            <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header manager" enabled="false">
               <collectionProp name="HeaderManager.headers">
                 <elementProp name="X-XSRF-TOKEN" elementType="Header">
                   <stringProp name="Header.name">X-XSRF-TOKEN</stringProp>
@@ -4092,7 +4122,7 @@
             <stringProp name="HTTPSampler.response_timeout"></stringProp>
           </HTTPSamplerProxy>
           <hashTree>
-            <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header manager" enabled="true">
+            <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header manager" enabled="false">
               <collectionProp name="HeaderManager.headers">
                 <elementProp name="X-XSRF-TOKEN" elementType="Header">
                   <stringProp name="Header.name">X-XSRF-TOKEN</stringProp>
@@ -4161,7 +4191,7 @@
             <stringProp name="HTTPSampler.response_timeout"></stringProp>
           </HTTPSamplerProxy>
           <hashTree>
-            <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header manager" enabled="true">
+            <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header manager" enabled="false">
               <collectionProp name="HeaderManager.headers">
                 <elementProp name="X-XSRF-TOKEN" elementType="Header">
                   <stringProp name="Header.name">X-XSRF-TOKEN</stringProp>
@@ -4230,7 +4260,7 @@
             <stringProp name="HTTPSampler.response_timeout"></stringProp>
           </HTTPSamplerProxy>
           <hashTree>
-            <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header manager" enabled="true">
+            <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header manager" enabled="false">
               <collectionProp name="HeaderManager.headers">
                 <elementProp name="X-XSRF-TOKEN" elementType="Header">
                   <stringProp name="Header.name">X-XSRF-TOKEN</stringProp>
